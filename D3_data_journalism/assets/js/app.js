@@ -160,7 +160,9 @@ d3.csv("../data/data.csv").then(function(povertyData, err) {
     .call(bottomAxis);
 
   // append y axis
-  chartGroup.append("g")
+  var yAxis = chartGroup.append("g")
+    .classed("y-axis", true)
+    .attr("transform", `translate(0, ${height})`)
     .call(leftAxis);
 
   // append initial circles
@@ -174,7 +176,7 @@ d3.csv("../data/data.csv").then(function(povertyData, err) {
     .attr("fill", "blue")
     .attr("opacity", ".5");
 
-  // Create group for two x-axis labels
+  // Create group for labels
   var labelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
@@ -198,15 +200,36 @@ d3.csv("../data/data.csv").then(function(povertyData, err) {
     .attr("value", "income") // value to grab for event listener
     .classed("inactive", true)
     .text("Household Income (Median)");
+ 
+    var obesityLabel = labelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 20)
+    .attr("value", "poverty") // value to grab for event listener
+    .classed("active", true)
+    .text("In Poverty (%)");
+
+  var smokesLabel = labelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 40)
+    .attr("value", "age") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Age (Median)");
   
-  // append y axis
-  chartGroup.append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 0 - margin.left)
-    .attr("x", 0 - (height / 2))
-    .attr("dy", "1em")
-    .classed("axis-text", true)
-    .text("Number of Billboard 500 Hits");
+  var healthcareLabel = labelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 40)
+    .attr("value", "income") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Household Income (Median)");
+
+    // append y axis
+//   chartGroup.append("text")
+//     .attr("transform", "rotate(-90)")
+//     .attr("y", 0 - margin.left)
+//     .attr("x", 0 - (height / 2))
+//     .attr("dy", "1em")
+//     .classed("axis-text", true)
+//     .text("Number of Billboard 500 Hits");
 
   // updateToolTip function above csv import
   var circlesGroup = updateToolTipx(chosenXAxis, circlesGroup);
@@ -272,6 +295,67 @@ d3.csv("../data/data.csv").then(function(povertyData, err) {
           }
       }
     });
+// x axis labels event listener
+labelsGroup.selectAll("text")
+.on("click", function() {
+  // get value of selection
+  var value = d3.select(this).attr("value");
+  if (value !== chosenYAxis) {
+
+    // replaces chosenYAxis with value
+    chosenYAxis = value;
+
+    // console.log(chosenYAxis)
+
+    // functions here found above csv import
+    // updates y scale for new data
+    yLinearScale = yScale(povertyData, chosenYAxis);
+
+    // updates x axis with transition
+    yAxis = renderAxes(yLinearScale, yAxis);
+
+    // updates circles with new x values
+    circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis);
+
+    // updates tooltips with new info
+    circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
+
+    // changes classes to change bold text
+    if (chosenYAxis === "obesity") {
+      obesityLabel
+        .classed("active", true)
+        .classed("inactive", false);
+      smokesLabel
+        .classed("active", false)
+        .classed("inactive", true);
+      healthcareLabel
+        .classed("active", false)
+        .classed("inactive", true);
+    }
+    else if (chosenYAxis === "smokes") {
+      obesityLabel
+        .classed("active", false)
+        .classed("inactive", true);
+      smokesLabel
+        .classed("active", true)
+        .classed("inactive", false);
+      healthcareLabel
+        .classed("active", false)
+        .classed("inactive", true);
+    }
+    else if (chosenYAxis === "healthcare") {
+        obesityLabel
+          .classed("active", false)
+          .classed("inactive", true);
+        smokesLabel
+          .classed("active", false)
+          .classed("inactive", true);
+        healthcareLabel
+          .classed("active", true)
+          .classed("inactive", false);
+      }
+  }
+});
 }).catch(function(error) {
   console.log(error);
 });
