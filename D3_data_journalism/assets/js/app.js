@@ -15,7 +15,7 @@ var height = svgHeight - margin.top - margin.bottom;
 // Create an SVG wrapper, append an SVG group that will hold our chart,
 // and shift the latter by left and top margins.
 var svg = d3
-  .select(".chart")
+  .select("#scatter")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
@@ -68,15 +68,16 @@ function renderAxes(newYScale, yAxis) {
       .duration(1000)
       .call(leftAxis);
   
-    return xAxis;
+    return yAxis;
   }
 // function used for updating circles group with a transition to
 // new circles
-function renderCircles(circlesGroup, newXScale, chosenXAxis) {
+function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYAxis) {
 
   circlesGroup.transition()
     .duration(1000)
-    .attr("cx", d => newXScale(d[chosenXAxis]));
+    .attr("cx", d => newXScale(d[chosenXAxis]))
+    .attr("cx", d => newYScale(d[chosenYAxis]));
 
   return circlesGroup;
 }
@@ -95,8 +96,23 @@ function updateToolTipx(chosenXAxis, circlesGroup) {
   else if (chosenXAxis === "income"){
     labelx = "Household Income (Median)";
   }
+  var toolTip = d3.tip()
+  .attr("class", "tooltip")
+  .offset([80, -60])
+  .html(function(d) {
+    return (`${d.state}<br>${labelx} ${d[chosenXAxis]}`);
+  });
+  circlesGroup.call(toolTip);
 
-  function updateToolTipy(chosenYAxis, circlesGroup) {
+  circlesGroup.on("mouseover", function(data) {
+    toolTip.show(data);
+  })
+    // onmouseout event
+    .on("mouseout", function(data, index) {
+      toolTip.hide(data);
+    });
+
+function updateToolTipy(chosenYAxis, circlesGroup) {
 
     var labely;
   
@@ -113,7 +129,7 @@ function updateToolTipx(chosenXAxis, circlesGroup) {
     .attr("class", "tooltip")
     .offset([80, -60])
     .html(function(d) {
-      return (`${d.rockband}<br>${label} ${d[chosenXAxis]}`);
+      return (`${d.state}<br>${labely} ${d[chosenYAxis]}`);
     });
 
   circlesGroup.call(toolTip);
@@ -233,7 +249,7 @@ d3.csv("../data/data.csv").then(function(povertyData, err) {
 
   // updateToolTip function above csv import
   var circlesGroup = updateToolTipx(chosenXAxis, circlesGroup);
-  var circlesGroup = updateToolTipy(chosenYAxis, circlesGroup);
+  
   // x axis labels event listener
   labelsGroup.selectAll("text")
     .on("click", function() {
@@ -257,7 +273,7 @@ d3.csv("../data/data.csv").then(function(povertyData, err) {
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
 
         // updates tooltips with new info
-        circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+        circlesGroup = updateToolTipx(chosenXAxis, circlesGroup);
 
         // changes classes to change bold text
         if (chosenXAxis === "poverty") {
@@ -295,9 +311,11 @@ d3.csv("../data/data.csv").then(function(povertyData, err) {
           }
       }
     });
-// x axis labels event listener
-labelsGroup.selectAll("text")
-.on("click", function() {
+ // updateToolTip function above csv import
+ var circlesGroup = updateToolTipy(chosenYAxis, circlesGroup);
+ // y axis labels event listener
+ labelsGroup.selectAll("text")
+ .on("click", function() {
   // get value of selection
   var value = d3.select(this).attr("value");
   if (value !== chosenYAxis) {
@@ -318,7 +336,7 @@ labelsGroup.selectAll("text")
     circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis);
 
     // updates tooltips with new info
-    circlesGroup = updateToolTip(chosenYAxis, circlesGroup);
+    circlesGroup = updateToolTipy(chosenYAxis, circlesGroup);
 
     // changes classes to change bold text
     if (chosenYAxis === "obesity") {
