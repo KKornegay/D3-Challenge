@@ -100,14 +100,14 @@ function updateToolTipx(chosenXAxis, circlesGroup) {
 
     var labely;
   
-    if (chosenYAxis === "poverty") {
-      labely = "In Poverty (%) ";
+    if (chosenYAxis === "obesity") {
+      labely = "Obesity (%)";
     }
-    else if (chosenYAxis === "age") {
-      labely = "Age (Median)";
+    else if (chosenYAxis === "smokes") {
+      labely = "Smokes (%)";
     }
-    else if (chosenYAxis === "income"){
-      labely = "Household Income (Median)";
+    else if (chosenYAxis === "healthcare"){
+      labely = "Lacks Healthcare (%)";
     }
   var toolTip = d3.tip()
     .attr("class", "tooltip")
