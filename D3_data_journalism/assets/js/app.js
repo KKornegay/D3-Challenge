@@ -49,7 +49,7 @@ function yScale(povertyData, chosenYAxis) {
       .range([0, height]);
   
     return yLinearScale;
-  
+    }  
 // function used for updating xAxis var upon click on axis label
 function renderAxes(newXScale, xAxis) {
   var bottomAxis = d3.axisBottom(newXScale);
@@ -84,7 +84,6 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYA
 
 // function used for updating circles group with new tooltip
 function updateToolTipx(chosenXAxis, circlesGroup) {
-
   var labelx;
 
   if (chosenXAxis === "poverty") {
@@ -97,10 +96,10 @@ function updateToolTipx(chosenXAxis, circlesGroup) {
     labelx = "Household Income (Median)";
   }
   var toolTip = d3.tip()
-  .attr("class", "tooltip")
-  .offset([80, -60])
-  .html(function(d) {
-    return (`${d.state}<br>${labelx} ${d[chosenXAxis]}`);
+    .attr("class", "tooltip")
+    .offset([80, -60])
+    .html(function(d) {
+      return (`${d.state}<br>${labelx} ${d[chosenXAxis]}`);
   });
   circlesGroup.call(toolTip);
 
@@ -111,7 +110,8 @@ function updateToolTipx(chosenXAxis, circlesGroup) {
     .on("mouseout", function(data, index) {
       toolTip.hide(data);
     });
-
+    return circlesGroup; 
+  }
 function updateToolTipy(chosenYAxis, circlesGroup) {
 
     var labely;
