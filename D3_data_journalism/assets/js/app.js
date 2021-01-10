@@ -198,7 +198,7 @@ d3.csv("../data/data.csv").then(function(povertyData, err) {
 
   var povertyLabel = labelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 20)
+    .attr("y", 40)
     .attr("value", "poverty") // value to grab for event listener
     .classed("active", true)
     .text("In Poverty (%)");
@@ -219,24 +219,24 @@ d3.csv("../data/data.csv").then(function(povertyData, err) {
  
     var obesityLabel = labelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 20)
+    .attr("y", 40)
     .attr("value", "poverty") // value to grab for event listener
     .classed("active", true)
-    .text("In Poverty (%)");
+    .text("Obesity (%)");
 
   var smokesLabel = labelsGroup.append("text")
     .attr("x", 0)
     .attr("y", 40)
     .attr("value", "age") // value to grab for event listener
     .classed("inactive", true)
-    .text("Age (Median)");
+    .text("Smokes (%)");
   
   var healthcareLabel = labelsGroup.append("text")
     .attr("x", 0)
     .attr("y", 40)
     .attr("value", "income") // value to grab for event listener
     .classed("inactive", true)
-    .text("Household Income (Median)");
+    .text("Lacks Healthcare (%)");
 
     // append y axis
 //   chartGroup.append("text")
