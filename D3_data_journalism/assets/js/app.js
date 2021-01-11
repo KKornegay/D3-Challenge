@@ -77,7 +77,7 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYA
   circlesGroup.transition()
     .duration(1000)
     .attr("cx", d => newXScale(d[chosenXAxis]))
-    .attr("cx", d => newYScale(d[chosenYAxis]));
+    .attr("cy", d => newYScale(d[chosenYAxis]));
 
   return circlesGroup;
 }
@@ -176,9 +176,14 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
     .call(bottomAxis);
 
   // append y axis
+  // var yAxis = chartGroup.append("g")
+  //   .classed("y-axis", true)
+  //   .attr("transform", `translate(0, ${height})`)
+  //   .call(leftAxis);
+
   var yAxis = chartGroup.append("g")
     .classed("y-axis", true)
-    .attr("transform", `translate(0, ${height})`)
+    .attr("transform", `translate(0, 0)`)
     .call(leftAxis);
 
   // append initial circles
@@ -218,6 +223,7 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
     .text("Household Income (Median)");
  
     var obesityLabel = labelsGroup.append("text")
+    .attr("transform", "rotate(-90)")
     .attr("x", 0)
     .attr("y", 40)
     .attr("value", "poverty") // value to grab for event listener
@@ -225,6 +231,7 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
     .text("Obesity (%)");
 
   var smokesLabel = labelsGroup.append("text")
+    .attr("transform", "rotate(-90)")
     .attr("x", 0)
     .attr("y", 40)
     .attr("value", "age") // value to grab for event listener
@@ -232,6 +239,7 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
     .text("Smokes (%)");
   
   var healthcareLabel = labelsGroup.append("text")
+    .attr("transform", "rotate(-90)")
     .attr("x", 0)
     .attr("y", 40)
     .attr("value", "income") // value to grab for event listener
