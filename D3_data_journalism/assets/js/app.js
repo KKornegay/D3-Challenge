@@ -146,7 +146,7 @@ function updateToolTipy(chosenYAxis, circlesGroup) {
 }
 
 // Retrieve data from the CSV file and execute everything below
-d3.csv("../data/data.csv").then(function(povertyData, err) {
+d3.csv("assets/data/data.csv").then(function(povertyData, err) {
   if (err) throw err;
 
   // parse data
