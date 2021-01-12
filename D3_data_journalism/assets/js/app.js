@@ -43,8 +43,8 @@ function xScale(povertyData, chosenXAxis) {
 function yScale(povertyData, chosenYAxis) {
     // create scales
     var yLinearScale = d3.scaleLinear()
-      .domain([d3.min(povertyData, d => d[chosenYAxis]) * 0.8,
-        d3.max(povertyData, d => d[chosenYAxis]) * 1.2
+      .domain([d3.max(povertyData, d => d[chosenYAxis]) * 1.2,
+        d3.min(povertyData, d => d[chosenYAxis]) * 0.5
       ])
       .range([0, height]);
   
@@ -197,51 +197,54 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
     .attr("fill", "blue")
     .attr("opacity", ".5");
 
-  // Create group for labels
-  var labelsGroup = chartGroup.append("g")
+  // Create group for x- axis labels
+  var xlabelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
-  var povertyLabel = labelsGroup.append("text")
+  var povertyLabel = xlabelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 40)
+    .attr("y", 20)
     .attr("value", "poverty") // value to grab for event listener
     .classed("active", true)
     .text("In Poverty (%)");
 
-  var ageLabel = labelsGroup.append("text")
+  var ageLabel = xlabelsGroup.append("text")
     .attr("x", 0)
     .attr("y", 40)
     .attr("value", "age") // value to grab for event listener
     .classed("inactive", true)
     .text("Age (Median)");
   
-  var incomeLabel = labelsGroup.append("text")
+  var incomeLabel = xlabelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 40)
+    .attr("y", 60)
     .attr("value", "income") // value to grab for event listener
     .classed("inactive", true)
     .text("Household Income (Median)");
- 
-    var obesityLabel = labelsGroup.append("text")
+  // Create group for x- axis labels  
+  var ylabelsGroup = chartGroup.append("g")
+    .attr("transform", `translate(${width / 2}, ${height + 20})`);
+    
+  var obesityLabel = ylabelsGroup.append("text")
     .attr("transform", "rotate(-90)")
     .attr("x", 0)
-    .attr("y", 40)
+    .attr("y", -80)
     .attr("value", "poverty") // value to grab for event listener
     .classed("active", true)
     .text("Obesity (%)");
 
-  var smokesLabel = labelsGroup.append("text")
+  var smokesLabel = ylabelsGroup.append("text")
     .attr("transform", "rotate(-90)")
     .attr("x", 0)
-    .attr("y", 40)
+    .attr("y", -60)
     .attr("value", "age") // value to grab for event listener
     .classed("inactive", true)
     .text("Smokes (%)");
   
-  var healthcareLabel = labelsGroup.append("text")
+  var healthcareLabel = ylabelsGroup.append("text")
     .attr("transform", "rotate(-90)")
     .attr("x", 0)
-    .attr("y", 40)
+    .attr("y", -40)
     .attr("value", "income") // value to grab for event listener
     .classed("inactive", true)
     .text("Lacks Healthcare (%)");
@@ -259,7 +262,7 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
   var circlesGroup = updateToolTipx(chosenXAxis, circlesGroup);
   
   // x axis labels event listener
-  labelsGroup.selectAll("text")
+  xlabelsGroup.selectAll("text")
     .on("click", function() {
       // get value of selection
       var value = d3.select(this).attr("value");
@@ -322,7 +325,7 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
  // updateToolTip function above csv import
  var circlesGroup = updateToolTipy(chosenYAxis, circlesGroup);
  // y axis labels event listener
- labelsGroup.selectAll("text")
+ ylabelsGroup.selectAll("text")
   .on("click", function() {
   // get value of selection
     var value = d3.select(this).attr("value");
