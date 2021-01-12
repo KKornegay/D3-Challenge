@@ -206,7 +206,13 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
     .attr("r", 10)
     .attr("fill", "blue")
     .attr("opacity", ".5");
-
+ // add label to circles with state abbreviation
+    circlesGroup.append('text')
+      .text(d => d['abbr'])
+      .attr('class', 'stateText')
+      .attr("x", d => xLinearScale(d[chosenXAxis]))
+      .attr("y", d => yLinearScale(d[chosenYAxis]))
+      .attr('z-index', 1000);
   // Create group for x- axis labels
   var xlabelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
@@ -234,7 +240,7 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
   
   // Create group for y- axis labels  
   var ylabelsGroup = chartGroup.append("g")
-    .attr("transform", `translate(${width / 2}, ${height + 20})`);
+    .attr("transform", `translate(0, ${height / 2})`);
     
   var obesityLabel = ylabelsGroup.append("text")
     .attr("transform", "rotate(-90)")
