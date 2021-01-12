@@ -26,7 +26,7 @@ var chartGroup = svg.append("g")
 
 // Initial Params
 var chosenXAxis = "poverty";
-var chosenYAxis = "healthcare";
+var chosenYAxis = "obesity";
 // function used for updating x-scale var upon click on axis label
 function xScale(povertyData, chosenXAxis) {
   // create scales
@@ -203,6 +203,7 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
       .attr("x", d => xLinearScale(d[chosenXAxis]))
       .attr("y", d => yLinearScale(d[chosenYAxis]))
       .attr('z-index', 1000);
+  
   // Create group for x- axis labels
   var xlabelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
