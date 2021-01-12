@@ -72,16 +72,26 @@ function renderYAxes(newYScale, yAxis) {
   }
 // function used for updating circles group with a transition to
 // new circles
-function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYAxis) {
+function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
 
   circlesGroup.transition()
     .duration(1000)
-    .attr("cx", d => newXScale(d[chosenXAxis]))
-    .attr("cy", d => newYScale(d[chosenYAxis]));
+    .attr("cx", d => newXScale(d[chosenXAxis]));
+    
 
   return circlesGroup;
 }
 
+// function used for updating circles group with a transition to
+// new circles
+function renderYCircles(circlesGroup, newYScale, chosenYAxis) {
+
+  circlesGroup.transition()
+    .duration(1000)
+    .attr("cy", d => newYScale(d[chosenYAxis]));
+
+  return circlesGroup;
+}
 // function used for updating circles group with new tooltip
 function updateToolTipx(chosenXAxis, circlesGroup) {
   var labelx;
@@ -282,7 +292,7 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
         xAxis = renderXAxes(xLinearScale, xAxis);
 
         // updates circles with new x values
-        circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
+        circlesGroup = renderXCircles(circlesGroup, xLinearScale, chosenXAxis);
 
         // updates tooltips with new info
         circlesGroup = updateToolTipx(chosenXAxis, circlesGroup);
@@ -345,7 +355,7 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
       yAxis = renderYAxes(yLinearScale, yAxis);
 
     // updates circles with new x values
-      circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis);
+      circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
 
     // updates tooltips with new info
       circlesGroup = updateToolTipy(chosenYAxis, circlesGroup);
