@@ -51,7 +51,7 @@ function yScale(povertyData, chosenYAxis) {
     return yLinearScale;
     }  
 // function used for updating xAxis var upon click on axis label
-function renderAxes(newXScale, xAxis) {
+function renderXAxes(newXScale, xAxis) {
   var bottomAxis = d3.axisBottom(newXScale);
 
   xAxis.transition()
@@ -61,7 +61,7 @@ function renderAxes(newXScale, xAxis) {
   return xAxis;
 }
 // function used for updating yAxis var upon click on axis label
-function renderAxes(newYScale, yAxis) {
+function renderYAxes(newYScale, yAxis) {
     var leftAxis = d3.axisLeft(newYScale);
   
     yAxis.transition()
@@ -221,7 +221,8 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
     .attr("value", "income") // value to grab for event listener
     .classed("inactive", true)
     .text("Household Income (Median)");
-  // Create group for x- axis labels  
+  
+  // Create group for y- axis labels  
   var ylabelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
     
@@ -278,7 +279,7 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
         xLinearScale = xScale(povertyData, chosenXAxis);
 
         // updates x axis with transition
-        xAxis = renderAxes(xLinearScale, xAxis);
+        xAxis = renderXAxes(xLinearScale, xAxis);
 
         // updates circles with new x values
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
@@ -341,7 +342,7 @@ d3.csv("assets/data/data.csv").then(function(povertyData, err) {
       yLinearScale = yScale(povertyData, chosenYAxis);
 
     // updates x axis with transition
-      yAxis = renderAxes(yLinearScale, yAxis);
+      yAxis = renderYAxes(yLinearScale, yAxis);
 
     // updates circles with new x values
       circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis);
