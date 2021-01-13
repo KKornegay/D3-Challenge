@@ -185,10 +185,7 @@ d3.csv("assets/data/data.csv").then(function(Pdata, err) {
         .call(bottomAxis);
 
     // append y axis
-  // var yAxis = chartGroup.append("g")
-  //   .classed("y-axis", true)
-  //   .attr("transform", `translate(0, ${height})`)
-  //   .call(leftAxis);
+  
     var yAxis = chartGroup.append("g")
         .classed("y-axis", true)
         .attr("transform", `translate(0, 0)`)
