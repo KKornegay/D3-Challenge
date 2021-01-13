@@ -102,7 +102,7 @@ function updateToolTipX(chosenXAxis, circlesGroup) {
     }
     
     var toolTip = d3.tip()
-        .attr("class", "tooltip")
+        .attr("class", "d3-tip")
         .offset([80, -60])
         .html(function(d) {
             return (`${d.state}<br>${labelx} ${d[chosenXAxis]}`);
@@ -135,10 +135,10 @@ function updateToolTipY (chosenYAxis, circlesGroup){
     }
     console.log(labely)
     var toolTip = d3.tip()
-        .attr("class", "tooltip")
+        .attr("class", "d3-tip")
         .offset([80, -60])
         .html(function(d) {
-            return (`${d.state}<br>${labely} ${d[chosenYAxis]}`);
+            return (`${d.state}<br>${labelx} ${d[chosenXAxis]}<br>${labely} ${d[chosenYAxis]}`);
         });
 
     circlesGroup.call(toolTip);
